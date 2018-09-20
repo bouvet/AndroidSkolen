@@ -18,6 +18,7 @@ package androidskolen.sesjon1.displayingbitmaps.ui
 
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
+import android.util.Log
 
 /**
  * Simple FragmentActivity to hold the main [ImageGridFragment] and not much else.
@@ -26,6 +27,9 @@ class ImageGridActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Log.w("username", intent.extras?.getString("username"))
+        Log.w("password", intent.extras?.getString("password"))
 
         if (supportFragmentManager.findFragmentByTag(TAG) == null) {
             val ft = supportFragmentManager.beginTransaction()

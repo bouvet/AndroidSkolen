@@ -1,6 +1,11 @@
 package androidskolen.sesjon1.displayingbitmaps.ui
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.inputmethod.EditorInfo
@@ -19,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // TODO
+        setContentView(R.layout.activity_login)
 
         val passwordView = findViewById<EditText>(R.id.password)
 
@@ -49,9 +54,52 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun gotoImageGridActivity() {
 
-        // TODO
+        if (checkExternalStoragePermission()) {
+            val intent = Intent(this, ImageGridActivity::class.java)
+            intent.putExtra("username", findViewById<EditText>(R.id.email).text.toString());
+            intent.putExtra("password", findViewById<EditText>(R.id.password).text.toString());
+            startActivity(intent)
+        }
 
     }
+
+
+    private fun checkExternalStoragePermission() : Boolean {
+        val checkSelfPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (checkSelfPermission != PackageManager.PERMISSION_GRANTED) {
+
+            // Har ikke vist "hvorfor"-melding
+            if (!hasShownRationale) {
+
+                showExternalStoragePermissionRationale()
+
+            }
+            else {
+
+                // Asynkron, callback i "onRequestPermissionResult"
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_EXTERNAL_STORAGE)
+
+            }
+            return false
+        }
+        return true
+    }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        // I tilfelle man sender flere forespørsler, sjekk at det er den vi forventer
+        if (requestCode == REQUEST_EXTERNAL_STORAGE) {
+
+            if (grantResults.size > 0 && grantResults.get(0) == PackageManager.PERMISSION_GRANTED) {
+
+                gotoImageGridActivity()
+
+            }
+
+            // Ikke auto-loop tilbake hvis det er DENIED, da et "ikke vis denne meldingen igjen" vil bli ubehagelig
+        }
+    }
+
 
     /**
      * Viser en dialog med forklaring til hvorfor man trenger internet permission. Kaller gotoImageGridActivity
@@ -67,6 +115,11 @@ class LoginActivity : AppCompatActivity() {
 
         val dialog = builder.create()
         dialog.show()
+    }
+
+    // Definer en konstant som systemet vil svare på requesten med
+    companion object {
+        val REQUEST_EXTERNAL_STORAGE = 1
     }
 
 }
