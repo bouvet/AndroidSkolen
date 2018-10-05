@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".HelloActivity">
+
+    <EditText
+        android:id="@+id/hello_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Your name here"/>
+    <Button
+        android:id="@+id/hello_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello!"/>
+
+    <TextView
+        android:id="@+id/hello_output"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        />
+
+    <Button
+        android:id="@+id/hello_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Next"/>
+</LinearLayout>
