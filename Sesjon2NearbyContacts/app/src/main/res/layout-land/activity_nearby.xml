@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_nearby"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_padding"
+    android:orientation="horizontal"
+    tools:context="no.bouvet.androidskolen.nearbycontacts.NearbyActivity">
+
+
+    <fragment
+        android:id="@+id/nearby_contacts_list_fragment"
+        android:name="no.bouvet.androidskolen.nearbycontacts.NearbyContactsFragment"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        tools:layout="@layout/nearby_contacts_fragment"/>
+
+    <fragment
+        android:id="@+id/selected_contact_fragment"
+        android:name="no.bouvet.androidskolen.nearbycontacts.SelectedContactFragment"
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_height="match_parent"
+        tools:layout="@layout/selected_contact_fragment"/>
+
+
+
+</LinearLayout>

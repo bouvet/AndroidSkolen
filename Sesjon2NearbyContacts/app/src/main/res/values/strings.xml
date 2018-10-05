@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Nearby Contacts</string>
+    <string name="nearby_contacts_activity_name">Nearby Contacts</string>
+    <string name="user_name_hint">name</string>
+    <string name="save_contact_button">Save</string>
+    <string name="publish_own_user_button">Publish</string>
+    <string name="user_email_hint">john@smith.com</string>
+    <string name="user_telephone_hint">98765432</string>
+</resources>
