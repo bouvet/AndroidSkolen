@@ -13,7 +13,9 @@ import no.bouvet.androidskolen.nearbycontacts.models.NearbyContactsListViewModel
 
 class NearbyContactsFragment : Fragment(), ModelUpdateListener {
 
-    // TODO: Oppgave 2
+    private lateinit var adapter : NearbyContactsAdapter
+    // Context her er aktiviteten fragmentet ligger i, altså "NearbyActivity"
+    private val contactSelectedListener by lazy { context as ContactSelectedListener }
 
     override fun onModelChanged() {
         updateAdapterModel()
@@ -21,7 +23,12 @@ class NearbyContactsFragment : Fragment(), ModelUpdateListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        return inflater.inflate(R.layout.nearby_contacts_fragment, container, false)
+        val view = inflater.inflate(R.layout.nearby_contacts_fragment, container, false)
+        // Binde opp hver gang viewet lages på nytt, så vi alltid har koblet adapteret til viewet som faktisk vises (se backstack i NearbyActivty)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.nearby_recyclerview)
+        adapter = createAndConnectAdapter(recyclerView)
+
+        return view
     }
 
     override fun onResume() {
@@ -36,10 +43,24 @@ class NearbyContactsFragment : Fragment(), ModelUpdateListener {
 
         NearbyContactsListViewModel.INSTANCE.removeModelUpdateListener(this)
     }
-
+    private fun createAndConnectAdapter(recyclerView: RecyclerView) : NearbyContactsAdapter {
+        val adapter = NearbyContactsAdapter(contactSelectedListener)
+        recyclerView.adapter = adapter
+        // LayoutManager for å liste ut alle elementer nedover. Alternativet er horisontalt eller "grid" layout
+        recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        return adapter
+    }
     private fun updateAdapterModel() {
-        val contactList = NearbyContactsListViewModel.INSTANCE.nearbyContacts
+        // Uten "Nearby" enheter:
+        val contactList = listOf<Contact>(
+                Contact("Ola Nordmann", "ola.nordmann@online.no", "24393988"),
+                Contact("Kari Nordmann", "kari.nordmann@online.no", "45389893"),
+                Contact("Knut Nordmann", "knut.nordmann@online.no", "21321322")
+        )
 
-        // TODO: Oppgave 2
+        // Med "Nearby" enheter
+        // val contactList = NearbyContactsListViewModel.INSTANCE.nearbyContacts
+
+        adapter.updateItems(contactList)
     }
 }

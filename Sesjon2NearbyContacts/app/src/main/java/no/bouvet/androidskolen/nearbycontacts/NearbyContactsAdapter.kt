@@ -28,10 +28,15 @@ class NearbyContactsAdapter(val contactSelectedListener: ContactSelectedListener
         return items.size
     }
 
-    class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private val nameView by lazy { itemView.findViewById<TextView>(R.id.item_name) }
 
         fun bind(item : Contact, contactSelectedListener: ContactSelectedListener) {
-            // TODO: Oppgave 2
+            nameView.text = item.name
+            itemView.setOnClickListener {
+                contactSelectedListener.onContactSelected(item)
+            }
         }
 
     }

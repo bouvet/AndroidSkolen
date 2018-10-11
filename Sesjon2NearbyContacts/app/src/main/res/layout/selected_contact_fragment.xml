@@ -6,6 +6,28 @@
               android:padding="@dimen/fragment_padding"
               android:background="@color/colorPrimaryDark">
 
-    <!-- TODO: Oppgave 3 -->
+    <TextView
+        android:id="@+id/selected_name"
+        android:textColor="#00ff00"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/selected_email"
+        android:textColor="#00ff00"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/selected_phone"
+        android:textColor="#00ff00"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

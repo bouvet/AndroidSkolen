@@ -11,10 +11,17 @@ import no.bouvet.androidskolen.nearbycontacts.models.OwnContactViewModel
 
 class OwnContactActivity : AppCompatActivity(), View.OnClickListener {
 
+    // Laster inn via findViewById når vi tar dem i bruk i onStart().
+    private val nameEdit by lazy { findViewById<EditText>(R.id.own_contact_name) }
+    private val emailEdit by lazy { findViewById<EditText>(R.id.own_contact_email) }
+    private val phoneEdit by lazy { findViewById<EditText>(R.id.own_contact_phone) }
+    private val button by lazy { findViewById<Button>(R.id.own_contact_publish) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_own_contact)
+
 
     }
 
@@ -23,7 +30,10 @@ class OwnContactActivity : AppCompatActivity(), View.OnClickListener {
 
         val contact = createContactFromPreferences()
 
-        // TODO: Oppgave 1
+        nameEdit.setText(contact.name)
+        emailEdit.setText(contact.email)
+        phoneEdit.setText(contact.telephone)
+        button.setOnClickListener(this@OwnContactActivity::onClick)
     }
 
     private fun createContactFromPreferences(): Contact {
@@ -41,7 +51,7 @@ class OwnContactActivity : AppCompatActivity(), View.OnClickListener {
         saveOwnContactInfo(contact)
         OwnContactViewModel.INSTANCE.contact = contact
 
-        // TODO: Oppgave 1
+        startActivity(Intent(this, NearbyActivity::class.java))
     }
 
     private fun saveOwnContactInfo(contact: Contact) {
@@ -56,10 +66,9 @@ class OwnContactActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun createContactFromInput(): Contact {
-        // TODO: Oppgave 1
-        val name = ""
-        val email = ""
-        val telephone = ""
+        val name = nameEdit.text.toString()
+        val email = emailEdit.text.toString()
+        val telephone = phoneEdit.text.toString()
 
         return Contact(name, email, telephone)
     }

@@ -18,13 +18,18 @@ import no.bouvet.androidskolen.nearbycontacts.models.SelectedContactViewModel
 
 class SelectedContactFragment : Fragment(), ModelUpdateListener, View.OnClickListener {
 
-    // TODO: Oppgave 3
+    private lateinit var nameText : TextView
+    private lateinit var emailText : TextView
+    private lateinit var phoneText : TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.selected_contact_fragment, container, false)
 
-        // TODO: Oppgave 3
+        // Binde opp hver gang viewet lages på nytt så ikke vi ender opp med views som er i et view Android har destroy-et
+        nameText = view.findViewById(R.id.selected_name)
+        emailText = view.findViewById(R.id.selected_email)
+        phoneText = view.findViewById(R.id.selected_phone)
 
         return view
     }
@@ -45,8 +50,9 @@ class SelectedContactFragment : Fragment(), ModelUpdateListener, View.OnClickLis
         if (contact != null) {
             Log.d(TAG, "Contact selected: " + contact.name)
 
-            // TODO: Oppgave 3
-
+            nameText.setText(contact.name)
+            emailText.setText(contact.email)
+            phoneText.setText(contact.telephone)
         }
     }
 

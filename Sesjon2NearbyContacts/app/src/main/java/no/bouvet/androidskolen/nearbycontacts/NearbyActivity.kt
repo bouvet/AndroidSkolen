@@ -48,12 +48,18 @@ class NearbyActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     override fun onContactSelected(contact: Contact) {
         Log.d(TAG, "Contact selected: " + contact.name)
 
-        val selectedContactFragment = fragmentManager.findFragmentById(R.id.selected_contact_fragment) as SelectedContactFragment?
+        var selectedContactFragment = fragmentManager.findFragmentById(R.id.selected_contact_fragment) as SelectedContactFragment?
 
+        // isInLayout er om fragmentet ligger i layout-xml-fila allerede (landscape-varianten av nearby_activity.xml)
         if (selectedContactFragment == null || !selectedContactFragment.isInLayout) {
 
-            // TODO: Oppgave 3
+            selectedContactFragment = SelectedContactFragment()
 
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragment_holder, selectedContactFragment)
+            // Legger transaksjonen på "backstack" - slik at Back-knappen navigerer oss tilbake til lista fra "selected" i portrait mode
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
         }
 
         SelectedContactViewModel.INSTANCE.setSelectedContact(contact)
