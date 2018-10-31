@@ -14,6 +14,7 @@ import android.support.test.runner.AndroidJUnit4
 import android.widget.TextView
 import org.hamcrest.core.AllOf.*
 import org.hamcrest.core.Is.`is`
+import org.junit.Assert
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,9 +36,7 @@ class CalculatorInstrumentedTest {
     var _rule: ActivityTestRule<CalculatorActivity> = object : ActivityTestRule<CalculatorActivity>(CalculatorActivity::class.java) {
         override fun getActivityIntent(): Intent {
             val intent = Intent(Intent.ACTION_MAIN)
-
-            // TODO: Oppgave 2 - legg ved extras som om det kommer fra HelloActivity
-
+            intent.putExtra("NAME", "Pingvinen")
             return intent
         }
     }
@@ -48,7 +47,9 @@ class CalculatorInstrumentedTest {
         val activity = _rule.activity
         val output = activity.findViewById<TextView>(R.id.hello_output)
 
-        // TODO: Oppgave 2 - Test at extras fra intent gir resultat i GUI
+        val intent = activity.intent
+
+        Assert.assertEquals("Hello Pingvinen!", output.text)
 
     }
 

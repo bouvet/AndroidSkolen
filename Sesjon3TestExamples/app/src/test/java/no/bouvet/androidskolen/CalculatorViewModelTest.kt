@@ -4,11 +4,6 @@ import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 
-/**
- * Local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 class CalculatorViewModelTest {
 
     @Test
@@ -16,17 +11,27 @@ class CalculatorViewModelTest {
 
         val viewModel = CalculatorViewModel()
 
-        // TODO: Oppgave 1 - Test processAddition
+        val correctResult = viewModel.processAddition("29", "13");
 
+        assertThat(correctResult, `is`("29 + 13 = 42"))
+
+        val invalidInput = viewModel.processAddition("Not number", "Zero")
+
+        assertThat(invalidInput, `is`("Invalid input"))
     }
 
     @Test
-    fun processSubtraction_isCorrect() {
+    fun processSubstraction_isCorrect() {
 
         val viewModel = CalculatorViewModel()
 
-        // TODO: Oppgave 1 - Test processSubtraction
+        val correctResult = viewModel.processSubtraction("71", "29");
 
+        assertThat(correctResult, `is`("71 - 29 = 42"))
+
+        val invalidInput = viewModel.processSubtraction("Not number", "Zero")
+
+        assertThat(invalidInput, `is`("Invalid input"))
     }
 
 
@@ -35,8 +40,13 @@ class CalculatorViewModelTest {
 
         val viewModel = CalculatorViewModel()
 
-        // TODO: Oppgave 1 - Test processMultiplication
+        val correctResult = viewModel.processMultiplication("6", "7");
 
+        assertThat(correctResult, `is`("6 * 7 = 42"))
+
+        val invalidInput = viewModel.processMultiplication("Not number", "Zero")
+
+        assertThat(invalidInput, `is`("Invalid input"))
     }
 
     @Test
@@ -44,8 +54,13 @@ class CalculatorViewModelTest {
 
         val viewModel = CalculatorViewModel()
 
-        // TODO: Oppgave 1 - Test processDivision
+        val correctResult = viewModel.processDivision("126", "3");
 
+        assertThat(correctResult, `is`("126 / 3 = 42"))
+
+        val invalidInput = viewModel.processDivision("Not number", "Zero")
+
+        assertThat(invalidInput, `is`("Invalid input"))
     }
 
 }

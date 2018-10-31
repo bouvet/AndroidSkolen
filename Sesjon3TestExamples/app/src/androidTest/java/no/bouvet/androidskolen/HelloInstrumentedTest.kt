@@ -43,7 +43,9 @@ class HelloInstrumentedTest {
         Assert.assertThat(output.text.toString(), `is`("Hello World!"))
 
         button.post {
-            // TODO: Oppgave 2 - Test at å legge inn data og trykke på knapp gir resultat
+            input.setText("Pingvinen")
+            button.performClick()
+            Assert.assertThat(output.text.toString(), `is`("Hello Pingvinen!"))
         }
     }
 

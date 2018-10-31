@@ -30,18 +30,17 @@ class CalculatorEspressoTest {
     @Test
     fun testSecondaryActivityActualEvent() {
         // Vi er i "HelloActivity" foreløpig
-        // TODO: Oppgave 3 - Simuler det som skal til for å komme til neste activity
-        onView(withId(R.id.hello_input))
+        onView(withId(R.id.hello_input)).perform(typeText("Pingvinen"), closeSoftKeyboard())
 
-        onView(withId(R.id.hello_next))
+        onView(withId(R.id.hello_next)).perform(click())
 
         intended(allOf(
-                toPackage("no.bouvet.androidskolen")//,
-                // TODO: Oppgave 3 - Sjekk at vi er på vei til rett aktivitet med rett Extras
+                toPackage("no.bouvet.androidskolen"),
+                hasComponent(hasShortClassName(".CalculatorActivity")),
+                hasExtra("NAME", "Pingvinen")
         ))
 
-        // TODO: Oppgave 3 - Sjekk resultatet
-        onView(withId(R.id.hello_output))
+        onView(withId(R.id.hello_output)).check(matches(withText("Hello Pingvinen!")))
 
     }
 

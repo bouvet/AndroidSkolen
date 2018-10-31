@@ -25,15 +25,13 @@ class HelloEspressoTest {
 
     @Test
     fun testMainInteractionEspresso() {
-        // TODO: Oppgave 3 - Test tilsvarende funksjoner som i oppgave 2
+        onView(withId(R.id.hello_output)).check(matches(withText("Hello World!")))
 
-        onView(withId(R.id.hello_output))
+        onView(withId(R.id.hello_input)).perform(typeText("Pingvinen"), closeSoftKeyboard())
 
-        onView(withId(R.id.hello_input))
+        onView(withId(R.id.hello_button)).perform(click())
 
-        onView(withId(R.id.hello_button))
-
-        onView(withId(R.id.hello_output))
+        onView(withId(R.id.hello_output)).check(matches(withText("Hello Pingvinen!")))
     }
 
 }
