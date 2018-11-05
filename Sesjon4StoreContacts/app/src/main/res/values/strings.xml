@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Awesome Contacts</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="add_contact_hint_name">Name</string>
+    <string name="add_contact_hint_email">Email</string>
+    <string name="add_contact_hint_phone">Phone</string>
+    <string name="add_contact_button_save">Save</string>
+</resources>
