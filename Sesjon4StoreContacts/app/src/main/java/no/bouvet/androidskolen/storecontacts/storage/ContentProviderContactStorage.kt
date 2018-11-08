@@ -16,14 +16,18 @@ class ContentProviderContactStorage(val context: Context) : ContactStorage {
         val content = context.contentResolver
         val cursor = content.query(ContactsContract.Contacts.CONTENT_URI, null, ContactsContract.Contacts._ID + " = " + id, null, null)
         if (cursor.moveToNext()) {
-            // TODO: Oppgave 4 - hent ut data fra de ulike Cursorene
-
-            val contactId = 0;
-
+            val contactId = cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts._ID))
+            val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
             val phones = content.query(Phone.CONTENT_URI, null,Phone.CONTACT_ID + " = " + contactId, null, null)
-
+            val aPhoneNumber = if (phones.moveToFirst()) {
+                phones.getString(phones.getColumnIndex(Phone.NUMBER))
+            } else ""
             val emails = content.query(Email.CONTENT_URI, null, Email.CONTACT_ID + " = " + contactId, null, null)
-
+            val anEmail = if (emails.moveToFirst()) {
+                emails.getString(emails.getColumnIndex(Email.ADDRESS))
+            } else ""
+            contact = Contact(name, anEmail, aPhoneNumber)
+            contact.id = contactId
         }
         cursor.close()
         return contact
@@ -34,14 +38,19 @@ class ContentProviderContactStorage(val context: Context) : ContactStorage {
         val content = context.contentResolver
         val cursor = content.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)
         while (cursor.moveToNext()) {
-            // TODO: Oppgave 4 - hent ut data fra de ulike Cursorene
-
-            val contactId = 0
-
+            val contactId = cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts._ID))
+            val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
             val phones = content.query(Phone.CONTENT_URI, null,Phone.CONTACT_ID + " = " + contactId, null, null)
-
+            val aPhoneNumber = if (phones.moveToFirst()) {
+                phones.getString(phones.getColumnIndex(Phone.NUMBER))
+            } else ""
             val emails = content.query(Email.CONTENT_URI, null, Email.CONTACT_ID + " = " + contactId, null, null)
-
+            val anEmail = if (emails.moveToFirst()) {
+                emails.getString(emails.getColumnIndex(Email.ADDRESS))
+            } else ""
+            val contact = Contact(name, anEmail, aPhoneNumber)
+            contact.id = contactId
+            contacts.add(contact)
         }
         cursor.close()
         return contacts;
@@ -70,8 +79,14 @@ class ContentProviderContactStorage(val context: Context) : ContactStorage {
             .withValue(StructuredName.DISPLAY_NAME, contact.name)
             .build());
 
-
-        // TODO: Oppgave 4 - finn tilsvarende for å legge til en epost-adresse i operasjonene
+        operations.add(ContentProviderOperation
+            .newInsert(Data.CONTENT_URI)
+            .withValueBackReference(Data.RAW_CONTACT_ID, 0)
+            .withValue(Data.MIMETYPE, CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+            .withValue(CommonDataKinds.Email.DATA, contact.email)
+            .withValue(Data.MIMETYPE, CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+            .withValue(CommonDataKinds.Email.TYPE, "2")
+            .build());
 
         content.applyBatch(ContactsContract.AUTHORITY, operations)
         triggerListeners()

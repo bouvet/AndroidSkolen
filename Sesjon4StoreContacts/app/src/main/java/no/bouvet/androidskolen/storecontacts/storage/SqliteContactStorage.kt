@@ -21,31 +21,57 @@ class SqliteContactStorage(val context: Context) : ContactStorage,
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        val DROP_TABLE = "DROP TABLE IF EXISTS $TABLE_NAME"
-                db.execSQL(DROP_TABLE)
-                onCreate(db)
+        val DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME
+        db.execSQL(DROP_TABLE)
+        onCreate(db)
     }
 
     override fun get(id: Int): Contact? {
         var contact : Contact? = null
-
-        // TODO: Oppgave 2: Query database for Cursor, hent ut data
-
+        val db = readableDatabase
+        val selectQuery = "SELECT  * FROM $TABLE_NAME WHERE $ID = $id"
+        val cursor = db.rawQuery(selectQuery, null)
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                val foundId = cursor.getInt(cursor.getColumnIndex(ID))
+                val name = cursor.getString(cursor.getColumnIndex(NAME))
+                val email = cursor.getString(cursor.getColumnIndex(EMAIL))
+                val telephone = cursor.getString(cursor.getColumnIndex(TELEPHONE))
+                contact = Contact(name, email, telephone)
+                contact.id = foundId
+            }
+        }
+        cursor.close()
         return contact;
     }
 
     override fun all(): List<Contact> {
         val contacts = mutableListOf<Contact>()
-
-        // TODO: Oppgave 2: Query database for Cursor, hent ut data
-
+        val db = readableDatabase
+        val selectQuery = "SELECT  * FROM $TABLE_NAME"
+        val cursor = db.rawQuery(selectQuery, null)
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                val id = cursor.getInt(cursor.getColumnIndex(ID))
+                val name = cursor.getString(cursor.getColumnIndex(NAME))
+                val email = cursor.getString(cursor.getColumnIndex(EMAIL))
+                val telephone = cursor.getString(cursor.getColumnIndex(TELEPHONE))
+                val contact = Contact(name, email, telephone)
+                contact.id = id
+                contacts.add(contact)
+            }
+        }
+        cursor.close()
         return contacts
     }
 
     override fun save(contact: Contact) {
-
-        // TODO: Oppgave 2: Insert med ContentValues
-
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put(NAME, contact.name)
+        values.put(EMAIL, contact.email)
+        values.put(TELEPHONE, contact.telephone)
+        db.insert(TABLE_NAME, null, values)
         triggerListeners()
     }
 

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_list.*
 import no.bouvet.androidskolen.storecontacts.R
+import no.bouvet.androidskolen.storecontacts.fragments.PermissionHandling
 import no.bouvet.androidskolen.storecontacts.models.ContactSelectedListener
 import no.bouvet.androidskolen.storecontacts.storage.ContactStorage
 import no.bouvet.androidskolen.storecontacts.storage.Contacts
@@ -36,11 +37,10 @@ class ListFragment : Fragment() {
 
     private fun contactsChanged() {
         thread {
-            // TODO: Oppgave 4 - ta i bruk permissions-sjekking
-            // if (PermissionHandling.hasPermissionsForContacts(activity!!)) {
+             if (PermissionHandling.hasPermissionsForContacts(activity!!)) {
                 val contacts = storage.all()
                 activity!!.runOnUiThread { adapter.updateContacts(contacts) }
-            // }
+             }
         }
     }
 

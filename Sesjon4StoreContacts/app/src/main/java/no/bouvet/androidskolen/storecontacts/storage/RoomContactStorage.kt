@@ -6,20 +6,18 @@ import no.bouvet.androidskolen.storecontacts.models.Contact
 class RoomContactStorage(val context : Context) : ContactStorage {
 
     val listeners = mutableListOf<() -> Unit>()
-    // TODO: Oppgave 3 - finne Room-DAOen
+    val dao = RoomContactsDatabase.getDatabase(context).dao()
 
     override fun get(id: Int): Contact? {
-        // TODO: Oppgave 3
-        return null;
+        return dao.get(id)
     }
 
     override fun all(): List<Contact> {
-        // TODO: Oppgave 3
-        return emptyList()
+        return dao.all()
     }
 
     override fun save(contact: Contact) {
-        // TODO: Oppgave 3
+        dao.save(contact)
         triggerListeners()
     }
 

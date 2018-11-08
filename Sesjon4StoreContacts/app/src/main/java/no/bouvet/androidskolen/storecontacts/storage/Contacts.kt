@@ -18,15 +18,11 @@ class Contacts {
         }
 
         private fun createStorage(context: Context): ContactStorage {
-            return FileContactStorage(context)
-            // TODO: Oppgave 1
+//            return FileContactStorage(context)
 //            return SharedPreferencesContactStorage(context)
-            // TODO: Oppgave 2
 //            return SqliteContactStorage(context)
-            // TODO: Oppgave 3
 //            return RoomContactStorage(context)
-            // TODO: Oppgave 4
-//            return ContentProviderContactStorage(context)
+            return ContentProviderContactStorage(context)
         }
 
 

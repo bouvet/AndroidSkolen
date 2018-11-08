@@ -6,20 +6,27 @@ import no.bouvet.androidskolen.storecontacts.models.Contact
 class SharedPreferencesContactStorage(val context: Context) : ContactStorage {
 
     val listeners = mutableListOf<() -> Unit>()
-    // TODO: Oppgave 1: Få tak i shared preferences
+    val sharedPreferences = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
 
     override fun get(id: Int): Contact? {
-//        if (id > sharedPreferences.getInt(lastContactInStoreKey, 0)) {
-//            return null
-//        }
-        // TODO: Oppgave 1: Hent contact-felter fra preferences, se companion object
-        return null
-
+        if (id > sharedPreferences.getInt(lastContactInStoreKey, 0)) {
+            return null
+        }
+        val foundId = sharedPreferences.getInt(contactIdKey(id), -1)
+        val name = sharedPreferences.getString(contactNameKey(id), "")
+        val email = sharedPreferences.getString(contactEmailKey(id), "")
+        val telephone = sharedPreferences.getString(contactTelephoneKey(id), "")
+        if (foundId < 0) {
+            return null
+        }
+        val contact = Contact(name, email, telephone)
+        contact.id = foundId
+        return contact
     }
 
     override fun all() : List<Contact> {
         val contacts = mutableListOf<Contact>()
-        val lastContactInStore = 0 // TODO: = sharedPreferences.getInt(lastContactInStoreKey, 0)
+        val lastContactInStore = sharedPreferences.getInt(lastContactInStoreKey, 0)
         if (lastContactInStore == 0) {
             return contacts
         }
@@ -33,8 +40,15 @@ class SharedPreferencesContactStorage(val context: Context) : ContactStorage {
     }
 
     override fun save(contact: Contact) {
-        val id = 0 // TODO: = sharedPreferences.getInt(lastContactInStoreKey, 0) + 1
-        // TODO: Lagre contact-felter fra preferences, se companion object.
+        val id = sharedPreferences.getInt(lastContactInStoreKey, 0) + 1
+        with(sharedPreferences.edit()) {
+            putInt(lastContactInStoreKey, id)
+            putInt(contactIdKey(id), id)
+            putString(contactNameKey(id), contact.name)
+            putString(contactEmailKey(id), contact.email)
+            putString(contactTelephoneKey(id), contact.telephone)
+            commit()
+        }
         triggerListeners()
     }
 

@@ -8,7 +8,14 @@ import no.bouvet.androidskolen.storecontacts.models.Contact
 @Dao
 interface RoomContactDao {
 
-    // TODO: Oppgave 3: Implementer det som trengs for at RoomContactStorage kan fungere
+    @Query("SELECT * FROM contact WHERE id = :id")
+    fun get(id : Int) : Contact?
+
+    @Query("SELECT * FROM contact")
+    fun all() : List<Contact>
+
+    @Insert
+    fun save(contact: Contact)
 
 }
 

@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import kotlinx.android.synthetic.main.activity_main.*
 import no.bouvet.androidskolen.storecontacts.fragments.add.AddContactFragment
-import no.bouvet.androidskolen.storecontacts.fragments.details.DetailsFragment
 import no.bouvet.androidskolen.storecontacts.fragments.list.ListFragment
+
+import kotlinx.android.synthetic.main.activity_main.*
+import no.bouvet.androidskolen.storecontacts.fragments.PermissionHandling
+import no.bouvet.androidskolen.storecontacts.fragments.details.DetailsFragment
 import no.bouvet.androidskolen.storecontacts.models.Contact
 import no.bouvet.androidskolen.storecontacts.models.ContactSelectedListener
 import no.bouvet.androidskolen.storecontacts.storage.Contacts
@@ -30,8 +32,7 @@ class MainActivity : AppCompatActivity(), ContactSelectedListener {
 
     private fun initializeStorage() {
         thread {
-            // TODO: Oppgave 4 - ta i bruk permissions-sjekking
-            // if (PermissionHandling.hasPermissionsForContacts(this)) {
+            if (PermissionHandling.hasPermissionsForContacts(this)) {
                 val storage = Contacts.getStorage(this)
                 val existing = storage.all()
                 if (existing.isEmpty()) {
@@ -39,10 +40,10 @@ class MainActivity : AppCompatActivity(), ContactSelectedListener {
                     storage.save(Contact("Kari Nordmann", "kari.nordmann@online.no", "45389893"))
                     storage.save(Contact("Knut Nordmann", "knut.nordmann@online.no", "21321322"))
                 }
-            // }
-            // else {
-            //     PermissionHandling.requestPermissionForContacts(this)
-            // }
+            }
+            else {
+                PermissionHandling.requestPermissionForContacts(this)
+            }
         }
     }
 
