@@ -5,11 +5,11 @@ class AsyncWork {
     companion object {
 
         fun getWorker() : AsyncWorker {
-            return ThreadAsyncWorker()
+            // return ThreadAsyncWorker()
             // return HandlerAsyncWorker()
             // return TaskAsyncWorker()
             // return ExecutorAsyncWorker()
-            // return ServiceAsyncWorker()
+            return ServiceAsyncWorker()
         }
 
     }

@@ -18,8 +18,12 @@ class WorkService : JobIntentService() {
 
     companion object {
 
-        // TODO: Oppgave 4 - Entrypoint for å starte opp servicen kan f.eks. være her.
-        
+        // "work" vil i et mer realistisk scenario inneholde informasjon om hva som skal gjøres
+        fun enqueueWork(context: Context, work: Intent) {
+            enqueueWork(context, WorkService::class.java, 1000, work)
+        }
+
+
     }
 
 }
